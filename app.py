@@ -38,7 +38,7 @@ def get_form_info(form, cls):
 @app.route("/")
 def home_page():
   pets = Pet.query.all()
-  return render_template("pet_list.html", pets=pets)
+  return render_template("index.html", pets=pets)
 
 @app.route("/add", methods=["GET", "POST"])
 def new_pet_form():
