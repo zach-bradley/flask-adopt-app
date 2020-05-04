@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}{{pet.name}}{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col container-fluid">
+        <img class="img-fluid rounded" src="{{pet.photo_url}}" alt="{{pet.name}}">
+      </div>
+
+      <div class="col container text-center">
+        <h1>{{pet.name}}</h1>
+        <hr>
+        <h4>Species: {{pet.species|capitalize}} | 
+        {% if pet.age %}
+          Age: {{pet.age}}</h4>
+        {% else %}
+          Age: Unknown</h4>
+        {% endif %}
+        <br>
+        <h5>Notes About Pet:</h5>
+        {% if pet.notes %}
+        <p>{{pet.notes}}</p>
+        {% endif %} 
+        {% if pet.available %}
+          <p><b>Status: Available</b></p>
+        {% else %}
+          <p>Status: Not Available</p>
+        {% endif %}
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editForm">
+          Edit Pet Info
+        </button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete">
+          Remove Pet
+        </button>
+
+      </div>
+    </div>
+    <hr>
+
+<!-- Modal -->
+  <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="editFormLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editFormLabel">Edit Pet</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="px-5" action="/{{pet.id}}" method="POST">
+            {{form.hidden_tag() }}
+            {% for field in form if field.widget.input_type != 'hidden' %}
+            <div class="form-group">
+              {{field.label}}
+              {{field(class="form-control", required=False)}}
+            </div>
+              {% for err in field.errors %}
+              <div class="alert alert-danger" role="alert">
+              {{err}}
+              </div>
+              {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="removePetLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="removePetLabel">Remove Pet</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to remove this pet?</p>
+        </div>
+        <div class="modal-footer">
+          <a href="/{{pet.id}}/delete" class="btn btn-danger">Yes</a>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}

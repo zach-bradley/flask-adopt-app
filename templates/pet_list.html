@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}All Pets{% endblock %}
+{% block content %}
+  <div class="container-flex d-flex flex-wrap">
+  
+  {% for pet in pets %}
+    <div class="container-flex m-3">
+      <div class="card" style="width: 18rem;">
+        <img src="{{pet.photo_url}}" class="card-img-top" alt="{{pet.name}}">
+        <div class="card-body">
+          <h3 class="card-title">{{pet.name}}</h3>
+          {% if pet.available %}
+            <p class="card-subtitle"><b>Available</b></p>
+          {% else %}
+            <p class="card-subtitle">Not Available</p>
+          {% endif %}
+          <a class="btn btn-info" href="/{{pet.id}}">More Info</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+{% endblock %}
